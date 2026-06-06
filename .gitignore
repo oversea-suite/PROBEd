@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# pkgbuild stuff
+*.pkg.tar.zst
+PROBEd
