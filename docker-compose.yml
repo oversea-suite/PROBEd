@@ -1,0 +1,11 @@
+services:
+  probed:
+    build: .
+    container_name: probed
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - ./probed.conf:/etc/probed.conf:ro
+    environment:
+      - FLASK_ENV=production
