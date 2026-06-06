@@ -17,7 +17,7 @@ RUN chmod +x /opt/probed/getinfo.sh || true
 COPY requirements.txt /opt/probed/requirements.txt
 RUN pip install --no-cache-dir -r /opt/probed/requirements.txt
 
-EXPOSE 8080
+EXPOSE 555 8080
 
 # Run the Flask app via gunicorn for production-like behavior
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "stats_server:app"]

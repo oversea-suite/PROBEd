@@ -2,10 +2,23 @@ services:
   probed:
     build: .
     container_name: probed
+    command: ["python3", "/opt/probed/probed"]
     ports:
-      - "8080:8080"
+      - "555:555"
     restart: unless-stopped
     volumes:
       - ./probed.conf:/etc/probed.conf:ro
+      - ./getinfo.sh:/var/lib/probed/getinfo.sh:ro
+
+  ui:
+    build: .
+    container_name: probed-ui
+    command: ["gunicorn", "--bind", "0.0.0.0:8080", "stats_server:app"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - probed
     environment:
+      - PROBED_HOST=probed
+      - PROBED_PORT=555
       - FLASK_ENV=production

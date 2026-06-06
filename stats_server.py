@@ -1,5 +1,6 @@
 from flask import Flask, Response, render_template_string
-import subprocess
+import os
+import socket
 
 app = Flask(__name__)
 
@@ -22,9 +23,17 @@ HTML_TMPL = """
 
 
 def read_stats():
+    host = os.getenv('PROBED_HOST', '127.0.0.1')
+    port = int(os.getenv('PROBED_PORT', '555'))
     try:
-        p = subprocess.run(["/opt/probed/getinfo.sh"], capture_output=True, text=True, check=False)
-        out = p.stdout if p.stdout else p.stderr
+        with socket.create_connection((host, port), timeout=10) as sock:
+            data = bytearray()
+            while True:
+                chunk = sock.recv(8192)
+                if not chunk:
+                    break
+                data.extend(chunk)
+            out = data.decode('utf-8', errors='replace')
     except Exception as e:
         out = f"error: {e}\n"
     items = []
