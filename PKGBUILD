@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="Public Resource Overseeing and Broadcasting Endpoint Daemon"
 arch=('any')
 url="https://github.com/oversea-suite/PROBEd"
-license=('custom')
+license=('LGPLv2.1')
 depends=('bash' 'python')
 provides=('probed')
 conflicts=('probed')
@@ -19,9 +19,9 @@ pkgver() {
 
 package() {
     cd PROBEd
-    install -Dm755 src/probed          "$pkgdir/usr/bin/probed"
-    install -Dm755 src/getinfo.sh      "$pkgdir/var/lib/probed/getinfo.sh"
-    install -Dm644 src/probed.service  "$pkgdir/usr/lib/systemd/system/probed.service"
-    install -Dm644 src/probed.conf     "$pkgdir/etc/probed.conf"
-    install -Dm644 LICENSE             "$pkgdir/usr/share/licenses/probed-git/LICENSE"
+    install -Dm755 probed          "$pkgdir/usr/bin/probed"
+    install -Dm755 getinfo.sh      "$pkgdir/var/lib/probed/getinfo.sh"
+    install -Dm644 probed.service  "$pkgdir/usr/lib/systemd/system/probed.service"
+    install -Dm644 probed.conf     "$pkgdir/etc/probed.conf"
+    install -Dm644 LICENSE         "$pkgdir/usr/share/licenses/probed-git/LICENSE"
 }
