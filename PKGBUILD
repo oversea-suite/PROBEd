@@ -1,6 +1,6 @@
 # Maintainer: oversea-suite
 pkgname=probed-git
-pkgver=r4.782db73
+pkgver=r10.c0b6060
 pkgrel=1
 pkgdesc="Public Resource Overseeing and Broadcasting Endpoint Daemon"
 arch=('any')
