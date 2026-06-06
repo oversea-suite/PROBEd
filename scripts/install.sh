@@ -3,7 +3,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC="$SCRIPT_DIR/.."
 
-install -Dm755 "$SRC/probed"         /usr/bin/probed
+install -Dm755 "$SRC/probed"         /usr/local/bin/probed
 install -Dm755 "$SRC/getinfo.sh"     /var/lib/probed/getinfo.sh
 install -Dm644 "$SRC/probed.service" /etc/systemd/system/probed.service
 if [ ! -f /etc/probed.conf ]; then
