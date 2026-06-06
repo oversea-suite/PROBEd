@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SRC="$SCRIPT_DIR/../src"
+SRC="$SCRIPT_DIR/.."
 
 install -Dm755 "$SRC/probed"         /usr/bin/probed
 install -Dm755 "$SRC/getinfo.sh"     /var/lib/probed/getinfo.sh
