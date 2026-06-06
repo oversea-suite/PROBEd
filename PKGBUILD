@@ -1,0 +1,27 @@
+# Maintainer: oversea-suite
+pkgname=probed-git
+pkgver=r0.0000000
+pkgrel=1
+pkgdesc="Public Resource Overseeing and Broadcasting Endpoint Daemon"
+arch=('any')
+url="https://github.com/oversea-suite/PROBEd"
+license=('custom')
+depends=('bash' 'python')
+provides=('probed')
+conflicts=('probed')
+source=("git+https://github.com/oversea-suite/PROBEd.git")
+sha256sums=('SKIP')
+
+pkgver() {
+    cd PROBEd
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+    cd PROBEd
+    install -Dm755 src/probed          "$pkgdir/usr/bin/probed"
+    install -Dm755 src/getinfo.sh      "$pkgdir/var/lib/probed/getinfo.sh"
+    install -Dm644 src/probed.service  "$pkgdir/usr/lib/systemd/system/probed.service"
+    install -Dm644 src/probed.conf     "$pkgdir/etc/probed.conf"
+    install -Dm644 LICENSE             "$pkgdir/usr/share/licenses/probed-git/LICENSE"
+}

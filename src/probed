@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import os, socket, subprocess, threading
+
+DEFAULTS = {
+    'port':   '555',
+    'bind':   '0.0.0.0',
+    'script': '/var/lib/probed/getinfo.sh',
+}
+
+def load_conf():
+    cfg = dict(DEFAULTS)
+    for path in ('probed.conf', '/etc/probed.conf'):
+        if os.path.exists(path):
+            with open(path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        k, _, v = line.partition('=')
+                        cfg[k.strip().lower()] = v.strip()
+            break
+    if os.path.exists('getinfo.sh'):
+        cfg['script'] = './getinfo.sh'
+    return cfg
+
+def handle(conn, script):
+    with conn:
+        try:
+            r = subprocess.run(['bash', script], capture_output=True, text=True, timeout=30)
+            conn.sendall(r.stdout.encode())
+            conn.shutdown(socket.SHUT_RDWR)
+            conn.close()
+        except Exception:
+            pass
+
+def main():
+    cfg = load_conf()
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        srv.bind((cfg['bind'], int(cfg['port'])))
+        srv.listen()
+        print(f"PROBEd on {cfg['bind']}:{cfg['port']} | script: {cfg['script']}")
+        while True:
+            conn, _ = srv.accept()
+            threading.Thread(target=handle, args=(conn, cfg['script']), daemon=True).start()
+
+if __name__ == '__main__':
+    main()
